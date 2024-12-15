@@ -1,0 +1,67 @@
+def display_menu(menu): # Defining Display Menu
+    print("\nMenu")
+    print("--------------------------------")
+    for item, price in menu.items(): # Displays food item with corresponding price
+        print(f"{item}: ₱{price:.2f}")
+    print("--------------------------------")
+
+def get_user_orders(menu): # Defining User Input
+    order_list = [] # New list for all order of user
+    total_cost = 0.0 # Setting counter
+    while True:
+        order = input("Please enter the name of the item you want to order (or type 'done' to finish): ").strip()
+        if order.lower() == 'done': # Typing done to break and proceed to next step
+            break
+        elif order in menu:
+            order_list.append(order) 
+            total_cost += menu[order]
+            print(f"Added {order} - ₱{menu[order]:.2f} to your order. Current total: ₱{total_cost:.2f}")
+        else:
+            print("Invalid item. Please choose from the menu.")
+    return order_list, total_cost
+
+def process_payment(total_cost): # Defining Payment Processing
+    while True:
+        try:
+            cash_rendered = float(input(f"Your total is ₱{total_cost:.2f}. Please enter the amount of cash: "))
+            if cash_rendered >= total_cost:
+                change = cash_rendered - total_cost # Calculating change
+                print(f"Payment successful! Your change is ₱{change:.2f}.")
+                break
+            else:
+                print(f"Insufficient amount. You still owe ₱{total_cost - cash_rendered:.2f}.") # Calculating how much user needs to pay in insufficient amount
+        except ValueError:
+            print("Invalid input. Please enter a valid amount.")
+
+def main():
+    menu = {
+    "Chicken Adobo": 199,
+    "Menudo": 299,
+    "Tinola": 179,
+    "Afritada": 279,
+    "Sisig": 289,
+    "Sinigang": 309,
+}
+    
+    # Code with functions
+  
+    print("Welcome to FilOrder!")
+
+    display_menu(menu)
+
+    order_list, total_cost = get_user_orders(menu)
+
+    if order_list:
+        print("\nYour Order:")
+        for item in order_list:
+            print(f"- {item}: ₱{menu[item]:.2f}")
+        print(f"Total Cost: ₱{total_cost:.2f}")
+
+        process_payment(total_cost)
+    else:
+        print("No items were ordered.")
+
+    print("Thank you for your order!")
+
+if __name__ == "__main__":
+    main()
